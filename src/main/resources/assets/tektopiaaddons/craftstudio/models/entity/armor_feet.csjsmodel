@@ -1,0 +1,106 @@
+{
+  "title": "GuardM",
+  "tree": [
+    {
+      "name": "BodyInner",
+      "position": [ 0, 13, 0 ],
+      "offsetFromPivot": [ 0, 5, 0 ],
+      "size": [ 1, 1, 1 ],
+      "rotation": [ 0, 0, 0 ],
+      "texOffset": [ 128,  64],
+      "children": [
+        {
+          "name": "Waist",
+          "position": [ 0, -5, 0 ],
+          "offsetFromPivot": [ 0, 0, 0 ],
+          "size": [ 1, 1, 1 ],
+          "rotation": [ 0, 0, 0 ],
+          "texOffset": [ 128,  64],
+          "children":
+          [
+            {
+              "name": "LegLeft",
+              "position": [ 2, 1, 0 ],
+              "offsetFromPivot": [ 0, -5, 0 ],
+              "size": [ 1, 1, 1 ],
+              "rotation": [ 0, 0, 0 ],
+              "texOffset": [ 128,  64],
+              "children": [
+                {
+                  "name": "LegLeftLow",
+                  "position": [ 0, -1, 0 ],
+                  "offsetFromPivot": [ 0, -5, 0 ],
+                  "size": [ 4, 6, 4 ],
+                  "rotation": [ 0, 0, 0 ],
+                  "texOffset": [ 128,  64],
+                  "children": [
+                    {
+                      "name": "ArmorFeetIronLeftBottom",
+                      "position": [ .4, 0, 0 ],
+                      "offsetFromPivot": [ 0, 0, 0 ],
+                      "size": [ 4, 12, 4 ],
+                      "rotation": [ 0, 0, 0 ],
+                      "texOffset": [ 0, 16 ],
+                      "children": [],
+                      "vertexCoords":
+                      [
+                          [ 3, 9, -3 ],
+                            [ -3, 9, -3 ],
+                            [ -3, -3, -3 ],
+                            [ 3, -3, -3 ],
+                            [ -3, 9, 3 ],
+                            [ 3, 9, 3 ],
+                            [ 3, -3, 3 ],
+                            [ -3, -3, 3 ]
+                        ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "LegRight",
+              "position": [ -2, 1, 0 ],
+              "offsetFromPivot": [ 0, -5, 0 ],
+              "size": [ 1, 1, 1 ],
+              "rotation": [ 0, 0, 0 ],
+              "texOffset": [ 128,  64],
+              "children": [
+                {
+                  "name": "LegRightLow",
+                  "position": [ 0, -1, 0 ],
+                  "offsetFromPivot": [ 0, -5, 0 ],
+                  "size": [ 1, 1, 1 ],
+                  "rotation": [ 0, 0, 0 ],
+                  "texOffset": [ 128,  64],
+                  "children": [
+                    {
+                      "name": "ArmorFeetIronRightBoot",
+                      "position": [ -.4, 0, 0 ],
+                      "offsetFromPivot": [ 0, 0, 0 ],
+                      "size": [ 4, 12, 4 ],
+                      "rotation": [ 0, 0, 0 ],
+                      "texOffset": [ 0, 16 ],
+                      "children": [],
+                      "vertexCoords":
+                      [
+                          [ -3, 9, -3 ],
+                          [ 3, 9, -3 ],
+                          [ 3, -3, -3 ],
+                          [ -3, -3, -3 ],
+                          [ 3, 9, 3 ],
+                          [ -3, 9, 3 ],
+                          [ -3, -3, 3 ],
+                          [ 3, -3, 3 ]
+                        ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

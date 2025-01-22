@@ -1,0 +1,106 @@
+buildscript {
+	repositories {
+		mavenCentral()
+		maven { url = "https://maven.cleanroommc.com"}
+		maven { url = "https://maven.minecraftforge.net/" }
+		maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
+
+	}
+	
+	dependencies {
+		classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.+"
+		classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+	}
+}
+
+apply plugin: "java"
+apply plugin: "net.minecraftforge.gradle"
+apply plugin: 'org.spongepowered.mixin'
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+compileJava {
+	sourceCompatibility = "8"
+	targetCompatibility = "8"
+}
+
+repositories {
+	maven {
+		url = "https://maven.minecraftforge.net/"
+	}
+	maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
+	maven { url = "https://maven.cleanroommc.com"}
+	maven {
+		url "https://cursemaven.com"
+		content {
+			includeGroup "curse.maven"
+		}
+	}
+}
+
+dependencies {
+	minecraft "net.minecraftforge:forge:1.12.2-14.23.5.2860"
+	implementation fg.deobf("curse.maven:tektopia-333029:2763046")
+	implementation files("libs/CraftStudioAPI-universal-1.0.1.95-mc1.12-alpha.jar")
+	compileOnly fg.deobf("curse.maven:epic-knights-armor-and-weapons-509041:3910300")
+	compileOnly fg.deobf("curse.maven:pams-harvestcraft-221857:2904825")
+
+	// Common:
+	annotationProcessor 'org.ow2.asm:asm-debug-all:5.2'
+	annotationProcessor 'com.google.guava:guava:32.1.2-jre'
+	annotationProcessor 'com.google.code.gson:gson:2.8.9'
+
+	// ForgeGradle:
+	implementation ('zone.rong:mixinbooter:10.2') {
+		transitive = false
+	}
+	annotationProcessor ('zone.rong:mixinbooter:10.2') {
+		transitive = false
+	}
+
+	//Mixins
+	implementation('org.spongepowered:mixin:0.8') {
+		transitive = false
+	}
+	annotationProcessor 'org.spongepowered:mixin:0.8:processor'
+}
+
+mixin {
+	add sourceSets.main, "mixins.tektopiaaddons.refmap.json"
+}
+
+minecraft {
+	mappings channel: "stable", version: "39-1.12"
+	
+	runs {
+		"client" {
+			workingDirectory file("./run")
+			mods { "${project.name}" { source sourceSets.main } }
+		}
+		
+		"server" {
+			workingDirectory file("./run/server")
+			mods { "${project.name}" { source sourceSets.main } }
+		}
+	}
+}
+
+processResources {
+	inputs.property "version", project.version
+	
+	filesMatching("mcmod.info") {
+		expand "version": project.version
+	}
+}
+
+jar {
+	manifest.attributes(
+			'FMLCorePluginContainsFMLMod': true,
+			'ForceLoadAsMod': true,
+			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker'
+	)
+}
+
+jar.finalizedBy('reobfJar')
+//When Forge 1.12 loads mods from a directory that's been put on the classpath, it expects to find resources in the same directory.
+//Default Gradle behavior puts resources in ./build/resources/main instead of ./build/classes/main/java. Let's change that.
+sourceSets.all { it.output.resourcesDir = it.output.classesDirs.getFiles().iterator().next() }

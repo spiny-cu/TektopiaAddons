@@ -1,0 +1,155 @@
+{
+  "title": "GuardM",
+  "tree": [
+    {
+      "name": "BodyInner",
+      "position": [ 0, 13, 0 ],
+      "offsetFromPivot": [ 0, 5, 0 ],
+      "size": [ 1, 1, 1 ],
+      "rotation": [ 0, 0, 0 ],
+      "texOffset": [ 128,  64],
+      "children":
+      [
+        {
+          "name": "ArmLeft",
+          "position": [ 6, 5, 0 ],
+          "offsetFromPivot": [ 0, -3.5, 0 ],
+          "size": [ 1, 1, 1 ],
+          "rotation": [ 1.036357, 0, 0 ],
+          "texOffset": [ 128,  64],
+          "children": [
+            {
+              "name": "ArmLeftLower",
+              "position": [ -4.768372E-07, -3, 0 ],
+              "offsetFromPivot": [ 0, -3.5, 0 ],
+              "size": [ 1, 1, 1 ],
+              "rotation": [ 0, 0, 0 ],
+              "texOffset": [ 17, 51 ],
+              "children":
+              [
+                  {
+                    "name": "ArmorChestIronArmLeftLower",
+                    "position": [ 0, 0, 0 ],
+                    "offsetFromPivot": [ 0, 0, 0 ],
+                    "size": [ 4, 5, 4 ],
+                    "rotation": [ 0, 0, 0 ],
+                    "texOffset": [ 40, 22 ],
+                    "children": [],
+                     "vertexCoords":
+                     [
+                        [ 2.5, 3.01, -2.5 ],
+                        [ -2.5, 3.01, -2.5 ],
+                        [ -2.5, -3.5, -2.5 ],
+                        [ 2.5, -3.5, -2.5 ],
+                        [ -2.5, 3.01, 2.5 ],
+                        [ 2.5, 3.01, 2.5 ],
+                        [ 2.5, -3.5, 2.5 ],
+                        [ -2.5, -3.5, 2.5 ]
+                     ]
+                  }
+              ]
+            },
+            {
+              "name": "ArmorChestIronArmLeft",
+              "position": [ 0, 0, 0 ],
+              "offsetFromPivot": [ 0, 0, 0 ],
+              "size": [ 4, 6, 4 ],
+              "rotation": [ 0, 0, 0 ],
+              "texOffset": [ 40, 16 ],
+              "children": [],
+              "vertexCoords":
+              [
+                  [ 2.5, 4, -2.5 ],
+                  [ -2.5, 4, -2.5 ],
+                  [ -2.5, -3.51, -2.5 ],
+                  [ 2.5, -3.51, -2.5 ],
+                  [ -2.5, 4, 2.5 ],
+                  [ 2.5, 4, 2.5 ],
+                  [ 2.5, -3.51, 2.5 ],
+                  [ -2.5, -3.51, 2.5 ]
+              ]
+            }
+          ]
+        },
+        {
+          "name": "ArmRight",
+          "position": [ -6, 5, 0 ],
+          "offsetFromPivot": [ 0, -3.5, 0 ],
+          "size": [ 1, 1, 1 ],
+          "rotation": [ 0, 0, 0 ],
+          "texOffset": [ 128,  64],
+          "children": [
+            {
+              "name": "ArmRightLower",
+              "position": [ 4.768372E-07, -3, 0 ],
+              "offsetFromPivot": [ 0, -3.5, 0 ],
+              "size": [ 1, 1, 1 ],
+              "rotation": [ 0, 0, 0 ],
+              "texOffset": [ 17, 40 ],
+              "children": [
+                {
+                  "name": "ArmorChestIronArmRightLower",
+                  "position": [ 0, -0.01218605, 0 ],
+                  "offsetFromPivot": [ 0, 0, 0 ],
+                  "size": [ 4, 5, 4 ],
+                  "rotation": [ -1.036357, 0, 0 ],
+                  "vertexCoords": [
+                    [ -2.5, 3.01, -2.5 ],
+                    [ 2.5, 3.01, -2.5 ],
+                    [ 2.5, -3.5, -2.5 ],
+                    [ -2.5, -3.5, -2.5 ],
+                    [ 2.5, 3.01, 2.5 ],
+                    [ -2.5, 3.01, 2.5 ],
+                    [ -2.5, -3.5, 2.5 ],
+                    [ 2.5, -3.5, 2.5 ]
+                  ],
+                  "texOffset": [ 40, 22 ],
+                  "children": []
+                }
+              ]
+            },
+            {
+              "name": "ArmorChestIronArmRight",
+              "position": [ 0, -0.01218605, 0 ],
+              "offsetFromPivot": [ 0, 0, 0 ],
+              "size": [ 4, 6, 4 ],
+              "rotation": [ -1.036357, 0, 0 ],
+              "vertexCoords": [
+                [ -2.5, 4, -2.5 ],
+                [ 2.5, 4, -2.5 ],
+                [ 2.5, -3.51, -2.5 ],
+                [ -2.5, -3.51, -2.5 ],
+                [ 2.5, 4, 2.5 ],
+                [ -2.5, 4, 2.5 ],
+                [ -2.5, -3.51, 2.5 ],
+                [ 2.5, -3.51, 2.5 ]
+              ],
+              "texOffset": [ 40, 16 ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "ArmorChestIron",
+          "position": [ 0, -0.1, 0 ],
+          "offsetFromPivot": [ 0, 0, 0 ],
+          "size": [ 8, 12, 4 ],
+          "rotation": [ 0, 0, 0 ],
+          "vertexCoords":
+          [
+              [ -4.5, 6.01, -3.5 ],
+              [ 4.5, 6.01, -3.5 ],
+              [ 4.5, -6.01, -3.5 ],
+              [ -4.5, -6.01, -3.5 ],
+              [ 4.5, 6.01, 3.5 ],
+              [ -4.5, 6.01, 3.5 ],
+              [ -4.5, -6.01, 3.5 ],
+              [ 4.5, -6.01, 3.5 ]
+            ],
+          "texOffset": [ 16, 16 ],
+          "children": []
+        }
+      ]
+    }
+  ]
+}

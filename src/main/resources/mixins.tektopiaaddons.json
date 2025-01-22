@@ -1,0 +1,27 @@
+{
+  "package": "com.sushiy.tektopiaaddons.mixin",
+  "refmap": "mixins.tektopiaaddons.refmap.json",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "BlockBaseGardeMixin",
+    "EntityAIEatFoodMixin",
+    "EntityAIHarvestFarmMixin",
+    "EntityAIMiningMixin",
+    "EntityAiPlantFarmMixin",
+    "EntityBlacksmithMixin",
+    "EntityFarmerMixin",
+    "EntityGuardMixin",
+    "EntityMerchantMixin",
+    "EntityMinerMixin",
+    "ModEntititiesMixin",
+    "TekVillagerMixin",
+    "VillageStructureBlacksmithMixin",
+    "VillageStructureMerchantStallMixin"
+  ],
+  "client": [
+    "RenderGuardMixin",
+    "RenderVillagerMixin"
+  ]
+}

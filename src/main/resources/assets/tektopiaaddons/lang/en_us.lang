@@ -1,0 +1,8 @@
+ai.filter.harvest_tile.modded=Harvest Modded Crops
+ai.filter.plant_tile.modded=Plant Modded Crops
+ai.filter.mining.stone=Gather Stone
+
+ai.filter.equip_autochange.armor=Automatically change Armor
+ai.filter.equip_autochange.weapon=Automatically change Weapon
+
+ai.filter.smelt_modded=Smelt Modded Metals

@@ -1,0 +1,50 @@
+{
+  "title": "armor_head",
+  "tree":
+  [
+    {
+      "name": "BodyInner",
+      "position": [ 0, 13, 0 ],
+      "offsetFromPivot": [ 0, 5, 0 ],
+      "size": [ 1, 1, 1],
+      "rotation": [ 0, 0, 0 ],
+      "texOffset": [ 128,  64],
+      "children":
+      [
+        {
+          "name": "Head",
+          "position": [ 0, 11, 0 ],
+          "offsetFromPivot": [ 0, 0, 0 ],
+          "size": [ 1, 1, 1],
+          "rotation": [ 0, 0, 0 ],
+          "texOffset": [ 128,  64],
+          "children":
+          [
+            {
+              "name": "ArmorHeadIron",
+              "position": [ 0, -0.45, 0 ],
+              "offsetFromPivot": [ 0, 0, 0 ],
+              "size": [ 8, 8, 8],
+              "rotation": [ 0, 0, 0 ],
+              "vertexCoords":
+              [
+                  [ 4.5, 5.5, -4.5 ],
+                  [ -4.5, 5.5, -4.5 ],
+                  [ -4.5, -5.5, -4.5 ],
+                  [ 4.5, -5.5, -4.5 ],
+                  [ -4.5, 5.5, 4.5 ],
+                  [ 4.5, 5.5, 4.5 ],
+                  [ 4.5, -5.5, 4.5 ],
+                  [ -4.5, -5.5, 4.5 ]
+              ],
+              "texOffset": [ 0, 0 ],
+              "children":
+              [
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

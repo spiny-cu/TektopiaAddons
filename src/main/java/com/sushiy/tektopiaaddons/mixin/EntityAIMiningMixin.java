@@ -1,0 +1,56 @@
+package com.sushiy.tektopiaaddons.mixin;
+
+import com.sushiy.tektopiaaddons.TektopiaAddons;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.tangotek.tektopia.ModBlocks;
+import net.tangotek.tektopia.ProfessionType;
+import net.tangotek.tektopia.entities.EntityVillageNavigator;
+import net.tangotek.tektopia.entities.EntityVillagerTek;
+import net.tangotek.tektopia.entities.ai.EntityAIMining;
+import net.tangotek.tektopia.entities.ai.EntityAIMoveToBlock;
+import net.tangotek.tektopia.structures.VillageStructureMineshaft;
+import net.tangotek.tektopia.tickjob.TickJob;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
+
+@Mixin(value = EntityAIMining.class, remap = false)
+public abstract class EntityAIMiningMixin extends EntityAIMoveToBlock {
+
+    public EntityAIMiningMixin(EntityVillageNavigator v) {
+        super(v);
+    }
+
+    @Shadow
+    protected @Final EntityVillagerTek villager;
+    @Shadow
+    private void tryBonusOre(EntityVillagerTek villager){}
+    @Shadow
+    private ItemStack toolUsed = null;
+    /**
+     * @author
+     * @reason
+     */
+    @Overwrite(remap = false)
+    private void mineBlock(BlockPos minePos, int skillChance) {
+        boolean dropBlock = VillageStructureMineshaft.isOre(this.villager.world, minePos) || this.villager.isAIFilterEnabled("mining.stone");
+        if (this.villager.world.getBlockState(minePos).getBlock() == Blocks.STONE) {
+            this.tryBonusOre(this.villager);
+        }
+
+        ModBlocks.villagerDestroyBlock(minePos, this.villager, dropBlock, this.villager.world.getBlockState(minePos).getBlock() != Blocks.EMERALD_ORE);
+        this.villager.modifyHunger(-1);
+        this.villager.throttledSadness(-this.villager.getRNG().nextInt(2) - 1);
+        this.villager.tryAddSkill(ProfessionType.MINER, skillChance);
+        if (this.villager.getRNG().nextInt(3) != 0) {
+            this.villager.damageItem(this.toolUsed, 1);
+        }
+
+        this.villager.addJob(new TickJob(20, 0, false, () -> this.villager.pickupItems(4)));
+    }
+}
