@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockOre;
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.*;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
@@ -18,6 +19,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import scala.collection.parallel.ParIterableLike;
 
 import java.io.File;
 import java.util.*;
@@ -30,7 +32,7 @@ import java.util.*;
 public class TektopiaAddons {
 	public static final String MODID = "tektopiaaddons";
 	public static final String NAME = "Tekotpia Addons";
-	public static final String VERSION = "1.3.2";
+	public static final String VERSION = "1.4.1";
 	
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 
@@ -85,6 +87,7 @@ public class TektopiaAddons {
 		smithIngotPriority = new HashMap<>();
 		reverseIngotFurnaceList = new HashMap<>();
 
+		Random rand = new Random();
         for(Item item : items)
 		{
 			ItemStack stack = new ItemStack(item);
@@ -116,7 +119,9 @@ public class TektopiaAddons {
 			if(Arrays.stream(OreDictionary.getOreIDs(stack)).anyMatch(x -> OreDictionary.getOreName(x).startsWith("ore")))
 			{
 				//Only add "ores" that drop themselves
-				if(Block.getBlockFromItem(item).getItemDropped(null, null, 0) == item)
+				Block block = Block.getBlockFromItem(item);
+				if(block.getRegistryName().getPath().contains("fossil")) continue;
+				if(block.getItemDropped(block.getDefaultState(), rand, 0) == item)
 				{
 					oreItems.add(item);
 					//LOGGER.info("Found OreItem: " + item.getRegistryName());

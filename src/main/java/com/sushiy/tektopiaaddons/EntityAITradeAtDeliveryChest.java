@@ -28,6 +28,11 @@ public class EntityAITradeAtDeliveryChest extends EntityAIMoveToBlockCopy
     int targetTradeSlot = -1;
     int targetResultSlot = -1;
 
+    int tradingLengthTicks = 50;
+    int totalConsecutiveTrades = 4;
+
+    boolean openedChest = false;
+
     public EntityAITradeAtDeliveryChest(EntityMerchant entityIn) {
         super(entityIn);
         this.merchant = entityIn;
@@ -48,7 +53,7 @@ public class EntityAITradeAtDeliveryChest extends EntityAIMoveToBlockCopy
     }
 
     protected void onArrival() {
-        TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] onArrival");
+        //TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] onArrival");
         super.onArrival();
         startDelivery();
         this.openChest();
@@ -60,36 +65,37 @@ public class EntityAITradeAtDeliveryChest extends EntityAIMoveToBlockCopy
 
 
     private void startDelivery() {
-        tradingTime = 200;
+        this.tradingTime = totalConsecutiveTrades * tradingLengthTicks;
         ITradeableStructure tradeable = (ITradeableStructure)merchantStall;
         merchantStall.occupySpecialBlock(tradeable.tektopiaAddons$getDeliveryChestPos());
         //this.merchant.playServerAnimation("villager_pickup");
-        TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] startDelivery");
-
-        TileEntityChest chest = tradeable.tektopiaAddons$getDeliveryChest();
+        //TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] startDelivery");
     }
 
     int tradingTime = -1;
 
     public void updateTask() {
         super.updateTask();
-        if (this.tradingTime > 0) {
+        if (this.tradingTime > 0)
+        {
             --this.tradingTime;
-            if(this.tradingTime % 20 == 0)
+            if(this.tradingTime % tradingLengthTicks == 0)
             {
                 PerformTrade();
             }
-        }else
+        }
+        else if (this.tradingTime == 0)
         {
-            active = false;
-            this.closeChest();
+            //TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + " Delivery TradingTime elapsed");
+            stopDelivery();
         }
     }
 
     private void openChest() {
-        TileEntity te = this.merchant.world.getTileEntity(this.destinationPos);
-        if (te instanceof TileEntityChest) {
-            TileEntityChest tileEntityChest = (TileEntityChest)te;
+        TileEntityChest tileEntityChest = getChest();
+        openedChest = true;
+        if(tileEntityChest != null)
+        {
             EntityPlayer p = this.merchant.world.getClosestPlayer((double)this.destinationPos.getX(), (double)this.destinationPos.getY(), (double)this.destinationPos.getZ(), (double)-1.0F, EntitySelectors.NOT_SPECTATING);
             if (p != null) {
                 tileEntityChest.openInventory(p);
@@ -99,12 +105,14 @@ public class EntityAITradeAtDeliveryChest extends EntityAIMoveToBlockCopy
     }
 
     private void closeChest() {
-        TileEntity te = this.merchant.world.getTileEntity(this.destinationPos);
-        if (te instanceof TileEntityChest) {
-            TileEntityChest tileEntityChest = (TileEntityChest)te;
+        TileEntityChest tileEntityChest = getChest();
+        if(tileEntityChest != null && openedChest)
+        {
+            openedChest = false;
             EntityPlayer p = this.merchant.world.getClosestPlayer((double)this.destinationPos.getX(), (double)this.destinationPos.getY(), (double)this.destinationPos.getZ(), (double)-1.0F, EntitySelectors.NOT_SPECTATING);
             if (p != null) {
                 tileEntityChest.closeInventory(p);
+                //TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "Close Chest -> close " + tileEntityChest.numPlayersUsing);
             }
         }
 
@@ -126,7 +134,7 @@ public class EntityAITradeAtDeliveryChest extends EntityAIMoveToBlockCopy
     public void PerformTrade()
     {
         ItemStack inChest = getChest().getStackInSlot(targetTradeSlot);
-        TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + " Merchant attempts trade with slot " + targetTradeSlot + "=" + inChest.getItem().getRegistryName());
+        //TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + " Merchant attempts trade with slot " + targetTradeSlot + "=" + inChest.getItem().getRegistryName());
 
         boolean hasTraded = false;
 
@@ -146,9 +154,18 @@ public class EntityAITradeAtDeliveryChest extends EntityAIMoveToBlockCopy
                 //return the rest
                 getChest().setInventorySlotContents(targetTradeSlot, fromChest);
                 //Add the sold items
-                getChest().setInventorySlotContents(targetResultSlot, currentTradeDeal.getItemToSell());
+                ItemStack resultStack = getChest().removeStackFromSlot(targetResultSlot);
+                if(!resultStack.isEmpty())
+                {
+                    resultStack.setCount(resultStack.getCount() + currentTradeDeal.getItemToSell().getCount());
+                }
+                else
+                {
+                    resultStack = currentTradeDeal.getItemToSell();
+                }
+                getChest().setInventorySlotContents(targetResultSlot, resultStack);
                 hasTraded = true;
-                TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + " Merchant has bought " + currentTradeDeal.getItemToBuy().toString() + " from the deliverybox for " + currentTradeDeal.getItemToSell().toString());
+                //TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + " Merchant has bought " + currentTradeDeal.getItemToBuy().toString() + " from the deliverybox for " + currentTradeDeal.getItemToSell().toString());
             }
         }
         if(hasTraded)
@@ -158,7 +175,12 @@ public class EntityAITradeAtDeliveryChest extends EntityAIMoveToBlockCopy
                     merchant.isChild() ? (merchant.getRNG().nextFloat() - merchant.getRNG().nextFloat()) * 0.2F + 1.5F : (merchant.getRNG().nextFloat() - merchant.getRNG().nextFloat()) * 0.2F + 1.0F);
 
         }
-        GetValidTradeDeal();
+        currentTradeDeal = GetValidTradeDeal();
+        if(currentTradeDeal != null)
+        {
+            //TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] found no further trade deals. Stopping Delivery");
+            stopDelivery();
+        }
     }
 
     protected int getFirstFreeOrMatchingChestSlot(TileEntityChest chest, ItemStack stack)
@@ -190,7 +212,7 @@ public class EntityAITradeAtDeliveryChest extends EntityAIMoveToBlockCopy
         MerchantRecipeList recipes = merchant.getRecipes(null);
         if(recipes==null)
         {
-            TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] GetValidTradeDeal: no recipes");
+            //TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] GetValidTradeDeal: no recipes");
             return null;
         }
         for (MerchantRecipe tradeDeal : recipes) {
@@ -201,7 +223,7 @@ public class EntityAITradeAtDeliveryChest extends EntityAIMoveToBlockCopy
                 if (ItemStack.areItemsEqual(tradeDeal.getItemToBuy(), stack)) {
                     int resultSlot = getFirstFreeOrMatchingChestSlot(getChest(), tradeDeal.getItemToSell());
                     if (resultSlot == -1) {
-                        TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] GetValidTradeDeal: no resultSlot for: " + tradeDeal.getItemToSell().toString());
+                        //TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] GetValidTradeDeal: no resultSlot for: " + tradeDeal.getItemToSell().toString());
                         continue;
                     }
                     targetTradeSlot = j;
@@ -222,20 +244,24 @@ public class EntityAITradeAtDeliveryChest extends EntityAIMoveToBlockCopy
                 return recipe;
             }
         }
-        TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] found no trade deal that buys " + itemStack.getItem().getRegistryName());
+        //TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] found no trade deal that buys " + itemStack.getItem().getRegistryName());
         return null;
     }
     private void stopDelivery() {
 
-        TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] stopDelivery");
+        active = false;
+        this.closeChest();
+        //TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] stopDelivery");
         //merchant.stopServerAnimation("villager_pickup");
     }
 
     public boolean isInterruptible() {
         return this.tradingTime > 30 || this.tradingTime <= 0;
     }
-    protected void onStuck() {
-        this.active = false;
+    protected void onStuck()
+    {
+        //TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] stuck");
+        stopDelivery();
         super.onStuck();
     }
 
@@ -264,6 +290,7 @@ public class EntityAITradeAtDeliveryChest extends EntityAIMoveToBlockCopy
             }
         }
 
+        //TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] delivery walkPos: " + result.toString());
         return result;
     }
 
@@ -273,19 +300,19 @@ public class EntityAITradeAtDeliveryChest extends EntityAIMoveToBlockCopy
         {
             if(getChest() == null)
             {
-                TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] should Execute Delivery false no chest");
+                //TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] should Execute Delivery false no chest");
                 return false;
             }
 
             currentTradeDeal = GetValidTradeDeal();
             if(currentTradeDeal != null)
             {
-                TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] should Execute Delivery true");
+                //TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] should Execute Delivery true");
                 return super.shouldExecute();
             }
             else
             {
-                TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] should Execute Delivery false no tradeDeal");
+                //TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] should Execute Delivery false no tradeDeal");
             }
         }
         return false;
@@ -293,13 +320,14 @@ public class EntityAITradeAtDeliveryChest extends EntityAIMoveToBlockCopy
 
     public void startExecuting() {
         active = true;
+        tradingTime = -1;
         this.merchant.setStall(1);
-        TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] startExecuting Delivery");
-        super.startExecuting();
         itemCarryingCopy = currentTradeDeal.getItemToBuy().copy();
         if (this.itemCarryingCopy != null) {
             this.merchant.equipActionItem(this.itemCarryingCopy);
         }
+        //TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] startExecuting Delivery at " + destinationPos.toString() + " chest: " + (getChest() != null) );
+        super.startExecuting();
     }
 
     @Override
@@ -307,12 +335,12 @@ public class EntityAITradeAtDeliveryChest extends EntityAIMoveToBlockCopy
         this.merchant.setMovementMode(this.merchant.getDefaultMovement());
     }
     public void resetTask() {
-        TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] resetTask");
-        this.stopDelivery();
+        //TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + "[" + getClass().getName() + "] resetTask");
         tradingTime = -1;
         currentTradeDeal = null;
         targetResultSlot = -1;
         targetTradeSlot = -1;
+        stopDelivery();
         super.resetTask();
         if (this.itemCarryingCopy != null) {
             this.merchant.unequipActionItem(this.itemCarryingCopy);

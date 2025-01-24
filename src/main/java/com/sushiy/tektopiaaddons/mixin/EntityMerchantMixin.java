@@ -11,6 +11,7 @@ import net.tangotek.tektopia.entities.EntityMerchant;
 import net.tangotek.tektopia.entities.EntityVillagerTek;
 import net.tangotek.tektopia.entities.ai.EntityAIGenericMove;
 import net.tangotek.tektopia.entities.ai.EntityAIVisitMerchantStall;
+import net.tangotek.tektopia.structures.VillageStructureType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,12 +31,11 @@ public abstract class EntityMerchantMixin extends EntityVillagerTek {
      * @reason
      */
     @Overwrite
-    private void checkStuck() {
-        if (this.firstCheck.distanceSq(this.village.getCenter()) > (double)40.0f && this.firstCheck.distanceSq(this.getPos()) < (double)20.0F) {
-            this.debugOut("Merchant failed to find a way to the village.");
+    private void checkStuck()
+    {
+        if (this.firstCheck.distanceSq(this.village.getCenter()) > (double)100.0f && this.firstCheck.distanceSq(this.getPos()) < (double)20.0F) {
             this.setDead();
         }
-
     }
 
     @Shadow
@@ -51,6 +51,6 @@ public abstract class EntityMerchantMixin extends EntityVillagerTek {
     @Inject(method = "initEntityAI", at = @At("TAIL"))
     void initEntityAIInject(CallbackInfo ci)
     {
-        this.addTask(50, new EntityAITradeAtDeliveryChest((EntityMerchant) (Object)this));
+        this.addTask(49, new EntityAITradeAtDeliveryChest((EntityMerchant) (Object)this));
     }
 }
