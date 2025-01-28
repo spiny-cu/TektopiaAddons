@@ -104,7 +104,7 @@ public abstract class EntityFarmerMixin extends EntityVillagerTek {
         if(blockState.getBlock() instanceof BlockCrops)
         {
             BlockCrops b = (BlockCrops) blockState.getBlock();
-            return b.getItem(Minecraft.getMinecraft().world, new BlockPos.MutableBlockPos(0,0,0), blockState).getItem();
+            return b.getItem(null, null, blockState).getItem();
         }
         return Items.AIR;
     }
