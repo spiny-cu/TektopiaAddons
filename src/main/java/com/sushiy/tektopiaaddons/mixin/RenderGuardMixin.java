@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = RenderGuard.class, remap = false)
+@Mixin(value = RenderGuard.class)
 public abstract class RenderGuardMixin<T extends EntityGuard> extends RenderVillagerMixin<T> {
 
     public RenderGuardMixin(RenderManager rendermanagerIn, ModelBase modelbaseIn, float shadowsizeIn) {
@@ -46,7 +46,7 @@ public abstract class RenderGuardMixin<T extends EntityGuard> extends RenderVill
      * @author
      * @reason
      */
-    @Overwrite
+    @Overwrite(remap = false)
     private void updateArmor(CSModelRenderer modelRenderer, EntityGuard entityGuard)
     {
         if (modelRenderer.boxName.startsWith("Capt"))
@@ -64,7 +64,7 @@ public abstract class RenderGuardMixin<T extends EntityGuard> extends RenderVill
      * @author
      * @reason
      */
-    @Overwrite
+    @Overwrite(remap = false)
     protected void preRenderCallback(EntityGuard entityGuard, float partialTickTime) {
         //this.mainModel = tektopiaAddons$maleModel;
         ModelCraftStudio model = (ModelCraftStudio)this.getMainModel();

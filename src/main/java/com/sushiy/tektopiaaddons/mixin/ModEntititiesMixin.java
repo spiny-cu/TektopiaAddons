@@ -11,14 +11,14 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(value = ModEntities.class, remap = false)
+@Mixin(value = ModEntities.class)
 public abstract class ModEntititiesMixin {
 
-    @Shadow
+    @Shadow(remap = false)
     private static void givePlayerStarterBook(EntityPlayer player) {
     }
 
-    @Redirect(method = "onPlayerLoggedIn", at = @At(value = "INVOKE", target = "Lnet/tangotek/tektopia/ModEntities;givePlayerStarterBook(Lnet/minecraft/entity/player/EntityPlayer;)V"))
+    @Redirect(method = "onPlayerLoggedIn", at = @At(value = "INVOKE", target = "Lnet/tangotek/tektopia/ModEntities;givePlayerStarterBook(Lnet/minecraft/entity/player/EntityPlayer;)V"), remap = false)
     private static void givePlayerStarterBookRedirect(EntityPlayer e)
     {
         if(ConfigHandler.NEW_PLAYERS_RECEIVE_STARTERBOOK)

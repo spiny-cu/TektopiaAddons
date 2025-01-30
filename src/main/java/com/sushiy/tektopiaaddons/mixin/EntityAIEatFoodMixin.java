@@ -24,13 +24,13 @@ import java.util.Arrays;
 import java.util.function.BiConsumer;
 
 
-@Mixin(value = EntityAIEatFood.class, remap = false)
+@Mixin(value = EntityAIEatFood.class)
 public abstract class EntityAIEatFoodMixin  extends EntityAIBase {
 
-    @Shadow
+    @Shadow(remap = false)
     private static void registerFood(Item item, int hunger, int happy){}
 
-    @Shadow
+    @Shadow(remap = false)
     private static void registerFood(Item item, int hunger, int happy, BiConsumer<EntityVillagerTek, ItemStack> postEat) {}
 
     @Inject(method = "<clinit>", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)

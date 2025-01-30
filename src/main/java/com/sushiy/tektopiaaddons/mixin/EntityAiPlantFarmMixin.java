@@ -22,18 +22,18 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
-@Mixin(value = EntityAIPlantFarm.class, remap = false)
+@Mixin(value = EntityAIPlantFarm.class)
 public abstract class EntityAiPlantFarmMixin  extends EntityAIMoveToBlock {
     public EntityAiPlantFarmMixin(EntityVillageNavigator v) {
         super(v);
     }
 
 
-    @Shadow
+    @Shadow(remap = false)
     private IBlockState plantState = null;
-    @Shadow
+    @Shadow(remap = false)
     protected @Final EntityVillagerTek villager;
-    @Shadow
+    @Shadow(remap = false)
     private Predicate<BlockPos> isPlantable() {return null;}
 
     /**

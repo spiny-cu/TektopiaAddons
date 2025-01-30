@@ -19,18 +19,18 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(value = EntityAIMining.class, remap = false)
+@Mixin(value = EntityAIMining.class)
 public abstract class EntityAIMiningMixin extends EntityAIMoveToBlock {
 
     public EntityAIMiningMixin(EntityVillageNavigator v) {
         super(v);
     }
 
-    @Shadow
+    @Shadow(remap = false)
     protected @Final EntityVillagerTek villager;
-    @Shadow
+    @Shadow(remap = false)
     private void tryBonusOre(EntityVillagerTek villager){}
-    @Shadow
+    @Shadow(remap = false)
     private ItemStack toolUsed = null;
     /**
      * @author

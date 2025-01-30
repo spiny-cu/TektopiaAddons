@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@Mixin(value = VillageStructureBlacksmith.class, remap = false)
+@Mixin(value = VillageStructureBlacksmith.class)
 public abstract class VillageStructureBlacksmithMixin extends VillageStructure {
 
 

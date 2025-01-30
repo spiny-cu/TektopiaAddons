@@ -19,9 +19,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = EntityMerchant.class, remap = false)
+@Mixin(value = EntityMerchant.class)
 public abstract class EntityMerchantMixin extends EntityVillagerTek {
-    @Shadow protected static AnimationHandler animHandler;
+    @Shadow(remap = false) protected static AnimationHandler animHandler;
     public EntityMerchantMixin(World worldIn, ProfessionType profType, int roleMask) {
         super(worldIn, profType, roleMask);
     }
@@ -30,23 +30,21 @@ public abstract class EntityMerchantMixin extends EntityVillagerTek {
      * @author
      * @reason
      */
-    @Overwrite
+    @Overwrite(remap = false)
     private void checkStuck()
     {
-        if (this.firstCheck.distanceSq(this.village.getCenter()) > (double)100.0f && this.firstCheck.distanceSq(this.getPos()) < (double)20.0F) {
+        if (this.firstCheck.distanceSq(this.village.getCenter()) > (double)100.0f && this.firstCheck.distanceSq(new BlockPos(this)) < (double)20.0F) {
             this.setDead();
         }
     }
 
-    @Shadow
+    @Shadow(remap = false)
     @Override
     public AnimationHandler getAnimationHandler() {
        return null;
     }
 
-    @Shadow private BlockPos firstCheck;
-
-    @Shadow public abstract BlockPos getPos();
+    @Shadow(remap = false) private BlockPos firstCheck;
 
     @Inject(method = "initEntityAI", at = @At("TAIL"))
     void initEntityAIInject(CallbackInfo ci)

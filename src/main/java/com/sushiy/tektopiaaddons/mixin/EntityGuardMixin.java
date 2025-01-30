@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Arrays;
 import java.util.function.Function;
 
-@Mixin(value = EntityGuard.class, remap = false)
+@Mixin(value = EntityGuard.class)
 public abstract class EntityGuardMixin extends EntityVillagerTek
 {
     @Mutable
@@ -59,7 +59,7 @@ public abstract class EntityGuardMixin extends EntityVillagerTek
      * @author Sushiy
      * @reason needs to take into account the autoequip filters
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public void equipBestGear() {
 
         EntityGuard guard = (EntityGuard) (Object)this;
@@ -112,7 +112,7 @@ public abstract class EntityGuardMixin extends EntityVillagerTek
      * @author Sushiy
      * @reason always prefer current item if autochange equipment is blocked
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public static Function<ItemStack, Integer> getBestWeapon(EntityGuard guard) {
         return (p) -> {
             if(!guard.isAIFilterEnabled("equip_autochange.weapon"))
@@ -147,7 +147,7 @@ public abstract class EntityGuardMixin extends EntityVillagerTek
      * @author Sushiy
      * @reason always prefer current item if autochange equipment is blocked
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public static Function<ItemStack, Integer> getBestArmor(EntityGuard guard, EntityEquipmentSlot slot) {
         return (p) -> {
             if(!guard.isAIFilterEnabled("equip_autochange.armor"))

@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-@Mixin(value = EntityBlacksmith.class, remap = false)
+@Mixin(value = EntityBlacksmith.class)
 public abstract class EntityBlacksmithMixin extends EntityVillagerTek{
 
 
@@ -33,10 +33,10 @@ public abstract class EntityBlacksmithMixin extends EntityVillagerTek{
         super(worldIn, profType, roleMask);
     }
 
-    @Shadow
+    @Shadow(remap = false)
     private static List<Recipe> craftSetAnvil;
 
-    @Shadow protected abstract boolean canVillagerPickupItem(ItemStack itemIn);
+    @Shadow(remap = false) protected abstract boolean canVillagerPickupItem(ItemStack itemIn);
 
     @Mutable
     @Unique
@@ -73,7 +73,7 @@ public abstract class EntityBlacksmithMixin extends EntityVillagerTek{
      * @author Sushiy
      * @reason adding a second filter would have been equally viable, but more tasks makes it less clear what the AI is doing
      */
-    @Overwrite
+    @Overwrite(remap = false)
     private static Function<ItemStack, Integer> bestSmeltable(EntityVillagerTek villager) {
         return (p) -> {
             if(villager.isAIFilterEnabled("smelt_modded"))
@@ -110,7 +110,7 @@ public abstract class EntityBlacksmithMixin extends EntityVillagerTek{
      * @author
      * @reason
      */
-    @Overwrite
+    @Overwrite(remap = false)
     protected Predicate<ItemStack> isDeliverable() {
         return (p) -> craftSetAnvil.stream().anyMatch((e) -> ItemStack.areItemsEqual(e.getProduct(), p) || TektopiaAddons.ingotItems.contains(p.getItem()));
     }

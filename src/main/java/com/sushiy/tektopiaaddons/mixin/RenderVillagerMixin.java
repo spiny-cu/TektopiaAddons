@@ -8,11 +8,11 @@ import net.tangotek.tektopia.client.RenderVillager;
 import net.tangotek.tektopia.entities.EntityVillagerTek;
 import org.spongepowered.asm.mixin.*;
 
-@Mixin(value = RenderVillager.class, remap = false)
+@Mixin(value = RenderVillager.class)
 public abstract class RenderVillagerMixin<T extends EntityVillagerTek> extends RenderLiving<T> {
-    @Shadow
+    @Shadow(remap = false)
     protected @Final ModelCraftStudio maleModel;
-    @Shadow
+    @Shadow(remap = false)
     protected @Final ModelCraftStudio femaleModel;
     public RenderVillagerMixin(RenderManager rendermanagerIn, ModelBase modelbaseIn, float shadowsizeIn) {
         super(rendermanagerIn, modelbaseIn, shadowsizeIn);

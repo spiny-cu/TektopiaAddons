@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.Predicate;
 
-@Mixin(value = EntityFarmer.class, remap = false)
+@Mixin(value = EntityFarmer.class)
 public abstract class EntityFarmerMixin extends EntityVillagerTek {
     public EntityFarmerMixin(World worldIn, ProfessionType profType, int roleMask) {
         super(worldIn, profType, roleMask);
@@ -35,7 +35,7 @@ public abstract class EntityFarmerMixin extends EntityVillagerTek {
     @Mutable
     @Unique
     private static @Final DataParameter<Boolean> PLANT_MODDED;
-    @Shadow
+    @Shadow(remap = false)
     private static @Final DataParameter<Boolean> GATHER_CANE;
     /**
      * @author Sushiy
@@ -46,6 +46,7 @@ public abstract class EntityFarmerMixin extends EntityVillagerTek {
     protected void entityInit(CallbackInfo ci) {
         this.registerAIFilter("harvest_tile.modded", HARVEST_MODDED);
         this.registerAIFilter("plant_tile.modded", PLANT_MODDED);
+        TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + " i added the fucking filters what the fuck!");
     }
 
     @Inject(method = "initEntityAI", at = @At("TAIL"))
@@ -80,7 +81,7 @@ public abstract class EntityFarmerMixin extends EntityVillagerTek {
      * @author Sushiy
      * @reason oldMethod is terrible
      */
-    @Overwrite
+    @Overwrite(remap = false)
     protected ItemStack modifyPickUpStack(ItemStack itemStack) {
         if ((itemStack.getItem() instanceof ItemSeeds) && itemStack.getCount() > 1) {
             itemStack.setCount(1);
@@ -98,7 +99,7 @@ public abstract class EntityFarmerMixin extends EntityVillagerTek {
      * @author Sushiy
      * @reason  add compatibility for all crops and seeds
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public static Item getSeed(IBlockState blockState)
     {
         if(blockState.getBlock() instanceof BlockCrops)
@@ -113,7 +114,7 @@ public abstract class EntityFarmerMixin extends EntityVillagerTek {
      * @author Sushiy
      * @reason add compatibility for all crops and seeds
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public Predicate<ItemStack> isSeed()
     {
         return (p) -> p.getItem() instanceof ItemSeeds || p.getItem() instanceof ItemSeedFood || TektopiaAddons.seedItems.contains(p.getItem());
@@ -121,7 +122,7 @@ public abstract class EntityFarmerMixin extends EntityVillagerTek {
      * @author Sushiy
      * @reason add compatibility for all crops and seeds
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public Predicate<ItemStack> isHarvestItem() {
         return (p) -> p.getItem() instanceof ItemSeedFood || TektopiaAddons.cropItems.contains(p.getItem()) || super.isHarvestItem().test(p);
     }

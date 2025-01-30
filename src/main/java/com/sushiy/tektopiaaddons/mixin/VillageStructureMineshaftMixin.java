@@ -14,7 +14,7 @@ import net.tangotek.tektopia.structures.VillageStructureType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
-@Mixin(value = VillageStructureMineshaft.class, remap = false)
+@Mixin(value = VillageStructureMineshaft.class)
 public abstract class VillageStructureMineshaftMixin extends VillageStructure {
     protected VillageStructureMineshaftMixin(World world, Village v, EntityItemFrame itemFrame, VillageStructureType t, String name) {
         super(world, v, itemFrame, t, name);
@@ -24,7 +24,7 @@ public abstract class VillageStructureMineshaftMixin extends VillageStructure {
      * @author
      * @reason
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public static boolean isOre(World world, BlockPos pos) {
         Block b = world.getBlockState(pos).getBlock();
         return TektopiaAddons.isOreBlock(b);
@@ -34,7 +34,7 @@ public abstract class VillageStructureMineshaftMixin extends VillageStructure {
      * @author Sushiy
      * @reason Includes all modded ores that we have previously scanned
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public static Block getRegrowBlock(EntityVillagerTek villager) {
         int oreRoll = villager.getRNG().nextInt(100);
         int count = 0;

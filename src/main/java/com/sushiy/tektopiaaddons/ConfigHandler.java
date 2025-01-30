@@ -11,7 +11,7 @@ public class ConfigHandler {
     public static float MODDED_FOOD_HUNGER_MULTIPLIER = 1.5f;
     public static float MODDED_FOOD_HAPPINESS_MULTIPLIER = 1.5f;
 
-    public static String[] MODDED_FOOD_CUSTOM_STATS_DEFAULT = {"harvestcraft:pepperoniitem, 5, -1", "minecraft:stone, 1,-10"};
+    public static String[] MODDED_FOOD_CUSTOM_STATS_DEFAULT = {};
     public static String[] MODDED_FOOD_CUSTOM_STATS;
 
     public static String[] MODDED_METAL_SMITH_PRIORITY_DEFAULT = {"Copper:1", "Bronze:3", "Silver:4", "Steel:5"};
@@ -44,24 +44,24 @@ public class ConfigHandler {
         config.addCustomCategoryComment(category, "Settings related to food consumption");
         MODDED_FOOD_HUNGER_MULTIPLIER = config.getFloat("Modded food hunger multiplier", category, 1.5f, 1.0f, 5.0f, "Multiplier for modded food hunger value");
         MODDED_FOOD_HAPPINESS_MULTIPLIER = config.getFloat("Modded food happiness multiplier", category, 1.0f, 1.0f, 5.0f, "Multiplier for modded food happiness value");
-        MODDED_FOOD_CUSTOM_STATS = config.getStringList("Modded food custom stats", category, MODDED_FOOD_CUSTOM_STATS_DEFAULT, "List of custom stats for fooditems. you can also add additional food items here that didn't get picked up automatically. minecraft values are:" +
-                "Items.APPLE, 12, -1\n" +
-                "Items.BAKED_POTATO, 35, 1\n" +
-                "Items.BEETROOT, 7, -1\n" +
-                "Items.BEETROOT_SOUP, 50, 6, returnBowl\n" +
-                "Items.BREAD, 55, 4\n" +
-                "Items.CAKE, 7, 25\n" +
-                "Items.CARROT, 12, -1\n" +
-                "Items.COOKED_BEEF, 70, 14\n" +
-                "Items.COOKED_CHICKEN, 60, 6\n" +
-                "Items.COOKED_MUTTON, 66, 4\n" +
-                "Items.COOKED_PORKCHOP, 70, 14\n" +
-                "Items.COOKIE, 5, 16\n" +
-                "Items.GOLDEN_CARROT, 70, 20\n" +
-                "Items.MELON, 6, 3\n" +
-                "Items.MUSHROOM_STEW, 50, 4, returnBowl\n" +
-                "Items.POTATO, 7, -1\n" +
-                "Items.PUMPKIN_PIE, 35, 18");
+        MODDED_FOOD_CUSTOM_STATS = config.getStringList("Modded food custom stats", category, MODDED_FOOD_CUSTOM_STATS_DEFAULT, "List of custom stats for fooditems. you can also add additional food items here that didn't get picked up automatically. vanilla item values are:" +
+                "minecraft:apple, 12, -1\n" +
+                "minecraft:baked_potato, 35, 1\n" +
+                "minecraft:beetroot, 7, -1\n" +
+                "minecraft:beetroot_soup, 50, 6, returnBowl\n" +
+                "minecraft:bread, 55, 4\n" +
+                "minecraft:cake, 7, 25\n" +
+                "minecraft:carrot, 12, -1\n" +
+                "minecraft:cooked_beef, 70, 14\n" +
+                "minecraft:cooked_chicken, 60, 6\n" +
+                "minecraft:cooked_mutton, 66, 4\n" +
+                "minecraft:cooked_porkchop, 70, 14\n" +
+                "minecraft:cookie, 5, 16\n" +
+                "minecraft:golden_carrot, 70, 20\n" +
+                "minecraft:melon, 6, 3\n" +
+                "minecraft:mushroom_stew, 50, 4, returnBowl\n" +
+                "minecraft:potato, 7, -1\n" +
+                "minecraft:pumpkin_pie, 35, 18\n");
 
 
         category = "Smithing";

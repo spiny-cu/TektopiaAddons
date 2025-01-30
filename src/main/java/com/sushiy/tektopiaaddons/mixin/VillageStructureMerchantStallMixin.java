@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = VillageStructureMerchantStall.class, remap = false)
+@Mixin(value = VillageStructureMerchantStall.class)
 public class VillageStructureMerchantStallMixin extends VillageStructure implements ITradeableStructure {
     protected VillageStructureMerchantStallMixin(World world, Village v, EntityItemFrame itemFrame, VillageStructureType t, String name) {
         super(world, v, itemFrame, t, name);
@@ -37,7 +37,7 @@ public class VillageStructureMerchantStallMixin extends VillageStructure impleme
         return deliveryChest;
     }
 
-    @Inject(method = "doFloorScan", at = @At("TAIL"))
+    @Inject(method = "doFloorScan", at = @At("TAIL"), remap = false)
     protected void doFloorScanInject(CallbackInfo ci) {
         BlockPos belowFrame = framePos.down();
         scanSpecialBlock(belowFrame, this.world.getBlockState(belowFrame).getBlock());

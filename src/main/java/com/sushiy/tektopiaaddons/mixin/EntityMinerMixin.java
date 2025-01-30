@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.function.Predicate;
 
-@Mixin(value = EntityMiner.class, remap = false)
+@Mixin(value = EntityMiner.class)
 public abstract class EntityMinerMixin extends EntityVillagerTek {
 
     public EntityMinerMixin(World worldIn, ProfessionType profType, int roleMask) {

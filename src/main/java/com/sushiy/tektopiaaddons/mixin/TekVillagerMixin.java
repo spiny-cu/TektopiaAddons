@@ -12,10 +12,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-@Mixin(value = TekVillager.class, remap = false)
+@Mixin(value = TekVillager.class)
 public class TekVillagerMixin {
 
-    @Inject(method = "onServerStarting", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
+    @Inject(method = "onServerStarting", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD, remap = false)
     public void onServerStartingInject(FMLServerStartingEvent evt, CallbackInfo ci, VillageCommands vc, World world) {
         //world.getGameRules().addGameRule("villagerItems", ConfigHandler., GameRules.ValueType.BOOLEAN_VALUE);
         //world.getGameRules().addGameRule("villagerSkillRate", String.valueOf(ConfigHandler.VILLAGER_SKILLRATE), GameRules.ValueType.NUMERICAL_VALUE);
