@@ -7,8 +7,6 @@ import com.leviathanstudio.craftstudio.client.util.EnumResourceType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockOre;
-import net.minecraft.client.Minecraft;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.*;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
@@ -19,7 +17,6 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import scala.collection.parallel.ParIterableLike;
 
 import java.io.File;
 import java.util.*;
@@ -41,7 +38,20 @@ public class TektopiaAddons {
 	public static HashSet<Item> seedItems;
 	public static HashSet<Item> cropItems;
 	public static HashSet<BlockCrops> cropBlocks;
-	public static HashSet<ItemFood> foodItems;
+	public static HashSet<ItemFood> standardFoodItems;
+
+	public static class FoodStats
+	{
+		public int hunger;
+		public int happiness;
+
+		public FoodStats(int _hunger, int _happiness)
+		{
+			hunger = _hunger;
+			happiness = _happiness;
+		}
+	}
+	public static HashMap<Item, FoodStats> configFoodItems;
 
 	public static HashSet<Item> oreItems;
 	public static HashSet<Item> dustItems;
@@ -72,7 +82,7 @@ public class TektopiaAddons {
 		seedItems = new HashSet<Item>();
 		cropItems = new HashSet<Item>();
 		cropBlocks = new HashSet<BlockCrops>();
-		foodItems = new HashSet<ItemFood>();
+		standardFoodItems = new HashSet<ItemFood>();
 		//Mining
 		oreBlocks = new HashSet<BlockOre>();
 		oreItems = new HashSet<Item>();
@@ -86,6 +96,30 @@ public class TektopiaAddons {
 		//Smithing
 		smithIngotPriority = new HashMap<>();
 		reverseIngotFurnaceList = new HashMap<>();
+
+		configFoodItems = new HashMap<>();
+		//Read foodConfig
+		for(String foodString : ConfigHandler.MODDED_FOOD_CUSTOM_STATS)
+		{
+			//remove any whitespace
+			foodString = foodString.replace(" ", "");
+			//Split by commas
+			String[] split = foodString.split(",");
+			if(split.length != 3)
+			{
+				LOGGER.info(MODID + " Config food item " + split[0] + "not setup correctly");
+				continue;
+			}
+			Item item = Item.getByNameOrId(split[0]);
+			if(item != null)
+			{
+				configFoodItems.put(item, new FoodStats(Integer.parseInt(split[1]), Integer.parseInt(split[2])));
+			}
+			else
+			{
+				LOGGER.info(MODID + " Config food item " + split[0] + "does not exist");
+			}
+		}
 
 		Random rand = new Random();
         for(Item item : items)
@@ -111,9 +145,11 @@ public class TektopiaAddons {
 				cropBlocks.add((BlockCrops) ((ItemSeedFood)item).getPlant(null, null).getBlock());
 				//LOGGER.info("Found Seed: " + item.getRegistryName());
 			}
+			//FOODITEMS
 			if(item instanceof  ItemFood)
 			{
-				foodItems.add((ItemFood)item);
+				if(!configFoodItems.containsKey(item))
+					standardFoodItems.add((ItemFood)item);
 				//LOGGER.info("Found Food: " + item.getRegistryName());
 			}
 			if(Arrays.stream(OreDictionary.getOreIDs(stack)).anyMatch(x -> OreDictionary.getOreName(x).startsWith("ore")))
@@ -150,7 +186,7 @@ public class TektopiaAddons {
 		}
 		LOGGER.info("Found " + seedItems.size() + " seeds");
 		LOGGER.info("Found " + cropItems.size() + " crops");
-		LOGGER.info("Found " + foodItems.size() + " foods");
+		LOGGER.info("Found " + standardFoodItems.size() + " foods");
 		LOGGER.info("Found " + oreItems.size() + " ores");
 		LOGGER.info("Found " + dustItems.size() + " dusts");
 		LOGGER.info("Found " + gemItems.size() + " gems");

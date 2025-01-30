@@ -2,6 +2,7 @@ package com.sushiy.tektopiaaddons.mixin;
 
 import com.sushiy.tektopiaaddons.ConfigHandler;
 import com.sushiy.tektopiaaddons.TektopiaAddons;
+import javafx.util.Pair;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -9,6 +10,7 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.tangotek.tektopia.TekTopiaGlobalData;
 import net.tangotek.tektopia.entities.EntityVillagerTek;
 import net.tangotek.tektopia.entities.ai.EntityAIEatFood;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,7 +35,7 @@ public abstract class EntityAIEatFoodMixin  extends EntityAIBase {
 
     @Inject(method = "<clinit>", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
     private static void staticBlock(CallbackInfo ci, BiConsumer<EntityVillagerTek, ItemStack> returnBowl) {
-        for(ItemFood food : TektopiaAddons.foodItems)
+        for(ItemFood food : TektopiaAddons.standardFoodItems)
         {
             if(food.getRegistryName().getNamespace().equals("minecraft")) continue;
             ItemStack stack = new ItemStack(food);
@@ -62,6 +64,12 @@ public abstract class EntityAIEatFoodMixin  extends EntityAIBase {
                 }
             }
             registerFood(food, Math.round(hunger), Math.round(happy));
+        }
+
+        for(Item customfood : TektopiaAddons.configFoodItems.keySet())
+        {
+            registerFood(customfood, TektopiaAddons.configFoodItems.get(customfood).hunger, TektopiaAddons.configFoodItems.get(customfood).happiness);
+            TektopiaAddons.LOGGER.info(TektopiaAddons.MODID + " registered food  config override" + customfood.getRegistryName().getPath() +"(" + TektopiaAddons.configFoodItems.get(customfood).hunger + "," + TektopiaAddons.configFoodItems.get(customfood).happiness + ")");
         }
     }
 }
