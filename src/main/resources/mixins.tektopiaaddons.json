@@ -15,6 +15,7 @@
     "EntityGuardMixin",
     "EntityMerchantMixin",
     "EntityMinerMixin",
+    "EntityVillagerTekMixin",
     "ModEntititiesMixin",
     "TekVillagerMixin",
     "VillageStructureBlacksmithMixin",

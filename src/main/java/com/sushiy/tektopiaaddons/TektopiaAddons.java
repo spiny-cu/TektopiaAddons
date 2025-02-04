@@ -29,7 +29,7 @@ import java.util.*;
 public class TektopiaAddons {
 	public static final String MODID = "tektopiaaddons";
 	public static final String NAME = "Tekotpia Addons";
-	public static final String VERSION = "1.4.3";
+	public static final String VERSION = "1.4.4";
 	
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 
@@ -131,19 +131,19 @@ public class TektopiaAddons {
 				cropItems.add(item);
 				//LOGGER.info("Found Crop: " + item.getRegistryName());
 			}
-			else if(item instanceof ItemSeeds)
+			if(item instanceof ItemSeeds)
 			{
 				seedItems.add(item);
 				Block b = ((ItemSeeds)item).getPlant(null, null).getBlock();
 				if(b instanceof BlockCrops)
 					cropBlocks.add((BlockCrops)b);
-				//LOGGER.info("Found Seed: " + item.getRegistryName());
+				LOGGER.info("Found Seed: " + item.getRegistryName());
 			}
 			else if(item instanceof ItemSeedFood)
 			{
 				seedItems.add(item);
 				cropBlocks.add((BlockCrops) ((ItemSeedFood)item).getPlant(null, null).getBlock());
-				//LOGGER.info("Found Seed: " + item.getRegistryName());
+				LOGGER.info("Found Seed: " + item.getRegistryName());
 			}
 			//FOODITEMS
 			if(item instanceof  ItemFood)
