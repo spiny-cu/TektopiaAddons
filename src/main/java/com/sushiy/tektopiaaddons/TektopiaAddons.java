@@ -142,7 +142,9 @@ public class TektopiaAddons {
 			else if(item instanceof ItemSeedFood)
 			{
 				seedItems.add(item);
-				cropBlocks.add((BlockCrops) ((ItemSeedFood)item).getPlant(null, null).getBlock());
+				Block b = ((ItemSeedFood)item).getPlant(null, null).getBlock();
+				if(b instanceof BlockCrops)
+					cropBlocks.add((BlockCrops)b);
 				LOGGER.info("Found Seed: " + item.getRegistryName());
 			}
 			//FOODITEMS
